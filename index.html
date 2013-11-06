@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="description" content="Comet ISON is currently in Vir, as bright as magnitude 7.68 and its brightness is increasing. It's distant 163,066,989 kms from Earth and 129,414,104 kms from the Sun."/>
+		<meta property="og:title" content="Comet ISON Current Position, Magnitude and Sky Map - The Sky Live"/>
+    <meta property="og:image" content="images/sky.jpg"/>
+    <meta property="og:description" content="Comet ISON is currently in Vir, as bright as magnitude 7.68 and its brightness is increasing. It's distant 163,066,989 kms from Earth and 129,414,104 kms from the Sun."/>
+		<title>Comet ISON Current Position, Magnitude and Sky Map - The Sky Live</title>
+		<link rel="shortcut icon" href="favicon.png" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+		<style>
+		body {
+				background-color: black;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				text-shadow: 1px 1px 3px #000000;				
+				color: #ffffff;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size:13px;
+			}
+			
+			a {
+				color: #ffffaa;
+			}
+			.small { 
+				font-size: 90%;				
+			}
+			.starlabel {
+				font-size: 70%;
+				color: #4444bb;
+				margin-left: 5px;
+				margin-top: 5px;
+				display:none;
+			}
+			.hipparcoslabel {
+				font-size: 70%;
+				color: #44bb44;
+				margin-left: 10px;
+				margin-top: 10px;
+				display:none;
+			}
+			.gsclabel {
+				font-size: 70%;
+				color: #444444;
+				margin-left: 5px;
+				margin-top: -20px;
+				display:none;
+			}
+			.galaxylabel {
+				font-size: 70%;
+				color: #bb4444;
+				margin-left: 5px;
+				margin-top: 5px;
+				display:none;
+				padding: 0 0 0 0;
+			}
+			#skyimage {
+				width: 100%;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				z-index: -1000;
+			}
+						
+			#about h1, h2{
+				margin-top: 5px;
+				margin-bottom: 4px;
+				font-size: 120%;
+			}
+			.value {
+				color: #aaffff;
+			}
+			#comet {
+				display: none;
+				opacity:0.8;
+				filter:alpha(opacity=80);
+				z-index: 100;
+			}
+			#cometp1,#cometn1 {
+				display: none;
+				opacity:0.3;
+				filter:alpha(opacity=30);
+				z-index: 100;
+			}
+			#cometp2,#cometn2 {
+				display: none;
+				opacity:0.3;
+				filter:alpha(opacity=30);
+				z-index: 100;
+			}
+			#cometlabel {
+				font-family:Monospace;
+				font-size: 110%;
+				font-weight: bold;
+				position: absolute;
+				display:none;
+				color:#bbbb00;
+				z-index: 100;
+			}
+			#cometlabelp1,#cometlabeln1 {
+				font-family:Monospace;
+				font-size: 100%;
+				position: absolute;
+				display:none;
+				color:#cccccc;
+				opacity:0.6;
+				filter:alpha(opacity=60);
+				z-index: 100;
+				color:#bbbb00;
+			}
+			#cometlabelp2,#cometlabeln2 {
+				font-family:Monospace;
+				font-size: 100%;
+				position: absolute;
+				display:none;
+				color:#cccccc;
+				opacity:0.6;
+				filter:alpha(opacity=60);
+				z-index: 100;
+				color:#bbbb00;
+			}
+			#about {
+					padding: 10px 10px 32px 10px;
+					text-align:left;
+					position:fixed;
+					top: 30px;
+					left:35px;
+					display: none;
+					width: 450px;
+					height: 450px;
+					font-size: 90%;
+					color:#fff; 
+					background: #000000;; 
+					z-index: 3000;
+					overflow-x: hidden;
+					overflow-y: auto;
+					outline: none;
+					border-color: #000000;
+					box-shadow: 0 0 12px #999999;
+					border-radius: 15px;
+			}
+			#about_content {
+				height: 435px;
+				overflow-y:auto;
+			}
+			
+			#aboutlink {
+			}
+			#labelsLink {
+			}
+			#footerlinks {
+				font-size: 90%;
+				text-decoration: none;
+				position: fixed;
+				bottom: 5px;
+				right: 5px;
+				z-index: 1000;
+			}
+			#footerlinks a {
+				text-decoration: none;
+			}
+
+			#header {
+				position: fixed;
+				top:62px;
+				left:0px;
+				text-align:left;
+				z-index: 1000;
+				width: 658px;
+			}
+			#header td {
+				padding: 2px 5px 2px 5px;
+			}
+			#header .ephemeridesform {
+				z-index: 3001;
+				text-align: left;
+				background-color: #222222;
+				font-size:90%;
+			}
+			#header .objectdata,.objectdatacontrols {
+				text-align: left;
+				z-index: 2000;
+				font-family:Monospace;
+			}
+
+			#header .transparentbg {
+				background: rgba(255, 255, 255, 0.05); 
+				padding-right:5px;
+				padding-bottom:5px;
+			}
+
+			#header .objectdatacontrols {
+				padding-top: 5px;
+			}
+
+			#header .objectdatacontrols a {
+				text-decoration: none;
+			}
+
+			#header .objectdatacontrols a.button {
+				font-size:100%;
+				padding: 1px 4px 1px 4px;
+				background: rgba(255, 255, 255, 0.2); 
+				border: 1px solid #aaaa33;
+				border-radius:4px;
+			}
+			#header .objectdatacontrols a.button:hover {
+				background: rgba(255, 255, 255, 0.3); 
+			}
+			#header .ephemeridesform h1, h2{
+				margin-top: 0px;
+				margin-bottom: 0px;
+				padding-top: 0px;
+				padding-bottom: 0px;
+				font-size: 150%;
+				line-height: 24px;
+				vertical-align: center;
+			}
+			#header a {}
+			
+			#header .ephemeridesform h1 img {
+				margin: 0px;
+				width: 20px;
+			}
+			
+			#cursorcoordinates {
+				text-align: right;
+				position: fixed;
+				z-index: 1000;
+				font-family:Monospace;
+				right: 5px;
+				top: 5px;
+			}			
+
+			#plusone {
+				position: fixed;
+				top: 10px;
+				right: 210px;
+				z-index: 1000;					
+			}
+			#tweet {
+				position: fixed;
+				top: 10px;
+				right: 85px;
+				z-index: 1000;					
+			}
+			#fb {
+				position: fixed;
+				top: 10px;
+				right: 10px;
+				z-index: 1000;					
+			}
+
+			#social {
+				margin-top: 0px;
+				position:fixed;
+				bottom:15px;
+				left:10px;z-index: 2000;
+			}
+			
+			.ui-tooltip {
+				background: rgba(0, 0, 0, 0.7); 
+				background: rgba(0, 0, 0, 0.7);
+				font-size: 60%;
+				text-align: left;
+				color: #5555aa;
+				border: 0px;
+			}
+			
+   .myButton {
+        -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+        -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+        box-shadow:inset 0px 1px 0px 0px #ffffff;
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fff8c9), color-stop(1, #ffe95c));
+        background:-moz-linear-gradient(top, #fff8c9 5%, #ffe95c 100%);
+        background:-webkit-linear-gradient(top, #fff8c9 5%, #ffe95c 100%);
+        background:-o-linear-gradient(top, #fff8c9 5%, #ffe95c 100%);
+        background:-ms-linear-gradient(top, #fff8c9 5%, #ffe95c 100%);
+        background:linear-gradient(to bottom, #fff8c9 5%, #ffe95c 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8c9', endColorstr='#ffe95c',GradientType=0);
+        background-color:#fff8c9;
+        -moz-border-radius:0px;
+        -webkit-border-radius:0px;
+        border-radius:0px;
+        border:1px solid #dcdcdc;
+        display:inline-block;
+        color:#050505;
+        padding:1px 13px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #ffffff;
+    }
+    .myButton:hover {
+        
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffe95c), color-stop(1, #fff8c9));
+        background:-moz-linear-gradient(top, #ffe95c 5%, #fff8c9 100%);
+        background:-webkit-linear-gradient(top, #ffe95c 5%, #fff8c9 100%);
+        background:-o-linear-gradient(top, #ffe95c 5%, #fff8c9 100%);
+        background:-ms-linear-gradient(top, #ffe95c 5%, #fff8c9 100%);
+        background:linear-gradient(to bottom, #ffe95c 5%, #fff8c9 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe95c', endColorstr='#fff8c9',GradientType=0);
+        
+        background-color:#ffe95c;
+    }
+    .myButton:active {
+        position:relative;
+        top:1px;
+    }			
+			
+			</style>		
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+	<script>
+	tycho=[];
+	hipparcos = [];
+	pgc=[];
+	gsc = [];
+	day0=16010;data=[[11.206389,6.360833,8.44,184005542,149131143,'Leo'],[11.292222,5.691389,8.30,179867902,145486131,'Leo'],[11.381944,4.987222,8.16,175793633,141795491,'Leo'],[11.475556,4.246111,8.02,171790630,138056847,'Leo'],[11.573889,3.466389,7.87,167867690,134267602,'Leo'],[11.676667,2.645556,7.72,164034561,130424901,'Vir'],[11.784722,1.781944,7.57,160302001,126525594,'Vir'],[11.898056,0.873056,7.41,156681971,122566190,'Vir'],[12.016944,-0.082500,7.24,153187638,118542807,'Vir'],[12.142222,-1.086667,7.07,149833590,114451097,'Vir'],[12.274167,-2.140000,6.90,146635872,110286169,'Vir'],];;
+	tycho=[["TYC 272-192-1",11.6939490193,"2.31633908",10.0447,"TYC_272_192_1","-9.1","6.7"],["TYC 272-222-1",11.699578934,"2.3074236",11.5487,"TYC_272_222_1","-20.4","-0.3"],["TYC 272-256-1",11.7020033487,"2.44281502",9.5449,"TYC_272_256_1","-15.0","-16.2"],["TYC 272-261-1",11.693761116,"1.86035391",11.7025,"TYC_272_261_1","7.3","21.8"],["TYC 272-275-1",11.71644745,"1.95183114",10.828,"TYC_272_275_1","12.9","-55.3"],["TYC 272-549-1",11.7249772033,"2.0733067",11.5812,"TYC_272_549_1","-20.5","-22.7"],["TYC 272-663-1",11.7238056173,"2.25177884",10.4874,"TYC_272_663_1","-36.0","-9.7"],["TYC 272-734-1",11.693697628,"1.92358836",10.079,"TYC_272_734_1","2.2","-11.8"],["TYC 272-753-1",11.7254843693,"1.92194844",9.8859,"TYC_272_753_1","-29.4","-18.6"],["TYC 272-891-1",11.7301813253,"2.28144869",11.9648,"TYC_272_891_1","-12.0","-3.1"],["TYC 272-933-1",11.7161521027,"2.05488016",9.3092,"TYC_272_933_1","-11.1","6.1"],["TYC 275-7-1",11.6744790553,"2.58942087",11.4144,"TYC_275_7_1","1.0","-10.3"],["TYC 275-17-1",11.6901593493,"2.90494479",11.5397,"TYC_275_17_1","-16.0","-19.3"],["TYC 275-58-1",11.69469097,"2.87066832",8.7585,"TYC_275_58_1","-49.6","5.1"],["TYC 275-64-1",11.7088863353,"2.90448645",11.4111,"TYC_275_64_1","-12.0","-3.9"],["TYC 275-72-1",11.7128198967,"2.82615624",10.3852,"TYC_275_72_1","-54.1","-1.5"],["TYC 275-96-1",11.6874143067,"2.73866354",11.5867,"TYC_275_96_1","6.4","-34.6"],["TYC 275-97-1",11.7075944593,"2.79046321",10.3751,"TYC_275_97_1","2.7","-13.1"],["TYC 275-104-1",11.706822482,"2.69278476",10.4474,"TYC_275_104_1","-4.0","4.9"],["TYC 275-148-1",11.6963818487,"2.73923281",11.4282,"TYC_275_148_1","-13.6","8.6"],["TYC 275-367-1",11.721011596,"2.95488748",10.0032,"TYC_275_367_1","-16.5","-15.1"]];hipparcos=[["HIP 57084",11.7025363273,2.87836632,8.626,"HIP_57084","-58.32","4.14","6.14","0.0","F0"],["HIP 57107",11.7071039273,2.36219053,6.9136,"HIP_57107","-55.38","-32.69","12.74","0.0","F5"]];pgc=[["PGC 1230626",11.67275,2.55583333333,"0.0","PGC_1230626","1230626"],["PGC 1219103",11.6782222222,2.19611111111,"0.0","PGC_1219103","1219103"],["PGC 1221966",11.68,2.28527777778,"0.0","PGC_1221966","1221966"],["PGC 1224075",11.6819444444,2.34861111111,"0.0","PGC_1224075","1224075"],["PGC 1234689",11.6849166667,2.68805555556,"0.0","PGC_1234689","1234689"],["PGC 1230540",11.6855555556,2.55333333333,"0.0","PGC_1230540","1230540"],["PGC 1224945",11.6863333333,2.37666666667,"0.0","PGC_1224945","1224945"],["PGC 1238129",11.6876111111,2.81277777778,"0.0","PGC_1238129","1238129"],["PGC 36271",11.6894444444,2.70583333333,"15.7","PGC_36271","36271"],["PGC 1224599",11.6915833333,2.36527777778,"0.0","PGC_1224599","1224599"],["PGC 1235768",11.6954166667,2.72722222222,"0.0","PGC_1235768","1235768"],["PGC 1242162",11.6965833333,2.97138888889,"0.0","PGC_1242162","1242162"],["PGC 1213986",11.6966111111,2.0375,"0.0","PGC_1213986","1213986"],["PGC 1225465",11.6974722222,2.39277777778,"0.0","PGC_1225465","1225465"],["PGC 36297",11.6977777778,2.58083333333,"15.2","PGC_36297","36297"],["PGC 3092324",11.7008888889,3.00444444444,"0.0","PGC_3092324","3092324"],["PGC 1221230",11.7010555556,2.26166666667,"0.0","PGC_1221230","1221230"],["PGC 1210901",11.7060555556,1.94083333333,"0.0","PGC_1210901","1210901"],["PGC 1226818",11.7066666667,2.43333333333,"0.0","PGC_1226818","1226818"],["PGC 1218595",11.7078611111,2.18055555556,"0.0","PGC_1218595","1218595"],["PGC 1227973",11.7088888889,2.46972222222,"0.0","PGC_1227973","1227973"],["PGC 139666",11.7102777778,1.93138888889,"0.0","PGC_139666","139666"],["PGC 1223638",11.7128611111,2.33611111111,"0.0","PGC_1223638","1223638"],["PGC 1242500",11.7140833333,2.98527777778,"0.0","PGC_1242500","1242500"],["PGC 1217309",11.7143611111,2.14277777778,"0.0","PGC_1217309","1217309"],["PGC 2826852",11.7163055556,1.90583333333,"0.0","PGC_2826852","2826852"],["PGC 1239264",11.7168611111,2.85694444444,"0.0","PGC_1239264","1239264"],["PGC 1220396",11.7185555556,2.23444444444,"0.0","PGC_1220396","1220396"],["PGC 1235043",11.7189166667,2.70027777778,"0.0","PGC_1235043","1235043"],["PGC 1211787",11.7198333333,1.96944444444,"0.0","PGC_1211787","1211787"],["PGC 1210876",11.72125,1.94,"0.0","PGC_1210876","1210876"],["PGC 1211265",11.7216944444,1.95222222222,"0.0","PGC_1211265","1211265"],["PGC 1212823",11.7223888889,2.00222222222,"0.0","PGC_1212823","1212823"],["PGC 1213722",11.7231666667,2.03027777778,"0.0","PGC_1213722","1213722"],["PGC 1216493",11.7328888889,2.1175,"0.0","PGC_1216493","1216493"],["PGC 1237430",11.7329444444,2.78722222222,"0.0","PGC_1237430","1237430"],["PGC 1225304",11.7340555556,2.38777777778,"0.0","PGC_1225304","1225304"],["PGC 1238062",11.7343611111,2.81027777778,"0.0","PGC_1238062","1238062"],["PGC 1232290",11.7391388889,2.60888888889,"0.0","PGC_1232290","1232290"]];gsc=[["GSC 0027500104",11.706826,2.69256,11.07,"GSC_0027500104"],["GSC 0027200222",11.6995726667,2.30723,11.6,"GSC_0027200222"],["GSC 0027500024",11.7007966667,2.54738,11.89,"GSC_0027500024"],["GSC 0027500081",11.702214,2.58287,12.22,"GSC_0027500081"],["GSC 0027500041",11.7207193333,2.50878,12.47,"GSC_0027500041"],["GSC 0027200943",11.6915846667,2.46769,12.62,"GSC_0027200943"],["GSC 0027200102",11.693098,2.41767,12.69,"GSC_0027200102"],["GSC 0027500008",11.701484,2.63355,12.74,"GSC_0027500008"],["GSC 0027200329",11.7133626667,2.48225,13.02,"GSC_0027200329"],["GSC 0027200384",11.7099246667,2.21494,13.12,"GSC_0027200384"],["GSC 0027500021",11.715796,2.50638,13.16,"GSC_0027500021"],["GSC 0027200448",11.7092266667,2.41554,13.24,"GSC_0027200448"],["GSC 0027200073",11.7219833333,2.29481,13.38,"GSC_0027200073"],["GSC 0027200319",11.697464,2.25097,13.55,"GSC_0027200319"],["GSC 0027500793",11.696812,2.51856,13.59,"GSC_0027500793"],["GSC 0027500066",11.6949066667,2.68713,13.59,"GSC_0027500066"],["GSC 0027500052",11.6924206667,2.65182,13.63,"GSC_0027500052"],["GSC 0027500077",11.7009473333,2.52026,13.66,"GSC_0027500077"],["GSC 0027201024",11.6898033333,2.48312,13.67,"GSC_0027201024"],["GSC 0027200136",11.684648,2.48664,13.7,"GSC_0027200136"],["GSC 0027500016",11.710452,2.52411,13.78,"GSC_0027500016"],["GSC 0027201026",11.69246,2.40649,13.94,"GSC_0027201026"],["GSC 0027500031",11.69781,2.58137,13.95,"GSC_0027500031"],["GSC 0027200383",11.690274,2.34327,13.95,"GSC_0027200383"],["GSC 0027500023",11.7191713333,2.57735,14.08,"GSC_0027500023"],["GSC 0027500156",11.6966573333,2.70531,14.17,"GSC_0027500156"],["GSC 0027200535",11.6966386667,2.39199,14.21,"GSC_0027200535"],["GSC 0027200729",11.7136113333,2.22668,14.23,"GSC_0027200729"],["GSC 0027500152",11.6966893333,2.55496,14.24,"GSC_0027500152"],["GSC 0027500063",11.7003466667,2.62929,14.26,"GSC_0027500063"],["GSC 0027500032",11.7121593333,2.62308,14.44,"GSC_0027500032"],["GSC 0027500137",11.7030993333,2.55583,14.5,"GSC_0027500137"],["GSC 0027200126",11.7225733333,2.48975,14.55,"GSC_0027200126"],["GSC 0027200613",11.6922813333,2.25011,14.57,"GSC_0027200613"],["GSC 0027500138",11.690978,2.59456,14.63,"GSC_0027500138"],["GSC 0027200009",11.7229146667,2.34711,14.76,"GSC_0027200009"],["GSC 0027500583",11.7038846667,2.7133,14.79,"GSC_0027500583"],["GSC 0027500102",11.6973313333,2.51344,14.79,"GSC_0027500102"],["GSC 0027500251",11.7192626667,2.61074,14.8,"GSC_0027500251"],["GSC 0027200037",11.6968073333,2.44436,14.83,"GSC_0027200037"],["GSC 0027200664",11.7127413333,2.31626,14.94,"GSC_0027200664"],["GSC 0027201040",11.7116966667,2.29263,14.99,"GSC_0027201040"],["GSC 0027200726",11.7096566667,2.47326,15.08,"GSC_0027200726"],["GSC 0027201031",11.7189146667,2.26042,15.15,"GSC_0027201031"],["GSC 0027200166",11.7026073333,2.44705,15.28,"GSC_0027200166"],["GSC 0027500005",11.6940366667,2.56482,15.3,"GSC_0027500005"],["GSC 0027200603",11.6941953333,2.31435,15.51,"GSC_0027200603"]];
+	</script>
+	<script>
+		//$(function(){$(document).tooltip();});
+		var labelsVisible = 1;
+		var adsVisible    = 1;
+		var aboutVisible = 0;
+		var perihelion = 1385618400000;
+		var perihelionDate = '28 Nov 2013';
+		Date.prototype.getDOY = function() {var onejan = new Date(this.getFullYear(),0,1);return Math.ceil((this - onejan) / 86400000);}
+				
+		centerX = 11.7040571916;
+		centerY = 2.42664435171;
+		centerXRad = centerX*Math.PI/12;
+		centerYRad = centerY*Math.PI/180;
+		fovX    = 45;
+		fovY    = 30;
+		fovXRad = fovX*Math.PI/180/60;
+		fovYRad = fovY*Math.PI/180/60;
+		imgX    = 2673;
+		imgY    = 1786;		
+		aspectRatio = imgX/imgY;
+		
+		effectiveImageWidth = 0;
+		effectiveImageHeight = 0;
+		
+		lastFullUpdateTime = 0;
+		deltaFullUpdate = 2000;
+		
+		function getAR(ardec){
+			var hours = padZero(Math.floor(ardec));
+			var mins = padZero(Math.floor((ardec - hours)*60));
+			var sec = padZero(((ardec - hours - mins/60)*3600).toFixed(1));
+			return hours + 'h&nbsp;' + mins + 'm&nbsp;' + sec + 's';
+		}
+		
+		function getDec(_decdec){
+			var sign = _decdec < 0 ? -1 : 1;
+			decdec = Math.abs(_decdec);
+			var deg = padZero(Math.floor(decdec));
+			var pri = padZero(Math.floor((decdec - deg)*60));
+			var sec = padZero(((decdec - deg - pri/60)*3600).toFixed(1));
+			return (sign * deg) + '°&nbsp;' + pri + "'&nbsp;" + sec + '"';
+		}
+		
+		function padZero(x){
+			return x < 10 ? '0' + x : x;
+		}
+		
+		function getDaysToPerihelion(){
+			var delta = perihelion - (new Date()).getTime();
+			var sign = delta < 0 ? -1 : 1;
+			if (delta < 0) delta = -delta;
+			var days = Math.floor(delta / 86400000);
+			var hours = Math.floor((delta - 86400000 * days) / 3600000)
+			var minutes = Math.floor((delta - 86400000 * days - 3600000 * hours)/60000);
+			var seconds = Math.floor((delta - 86400000 * days - 3600000 * hours - 60000 * minutes)/1000);			
+			return (sign == 1 ? '-' : '+') + days + 'd&nbsp;' + hours + "h&nbsp;" + minutes + "m&nbsp;" + seconds + "s";
+		}
+
+		function addCommas(str) {
+				var amount = new String(str);
+				amount = amount.split("").reverse();
+				var output = "";
+				for ( var i = 0; i <= amount.length-1; i++ ){
+						output = amount[i] + output;
+						if ((i+1) % 3 == 0 && (amount.length-1) !== i)output = ',' + output;
+				}
+				return output;
+		}
+
+		function getCometData(nowUTC){
+			var dayIdx = Math.floor(nowUTC/86400000) - day0;			
+			var dayFraction = nowUTC/86400000 - Math.floor(nowUTC/86400000);
+			
+			var dar = data[dayIdx+1][0] - data[dayIdx][0];
+			if (dar > 6){dar = dar - 24;}
+			if (dar < -6) {dar = 24 + dar;}
+			var ar  = data[dayIdx][0] + (dar)*dayFraction;
+			if (ar >= 24) {ar = ar - 24;}
+			if (ar <= 0){ar = ar + 24;}
+
+			var dec = data[dayIdx][1] + (data[dayIdx+1][1] - data[dayIdx][1])*dayFraction;
+			var mag = data[dayIdx][2] == -100 ||data[dayIdx+1][2] == -100 ? -100 : data[dayIdx][2] + (data[dayIdx+1][2] - data[dayIdx][2])*dayFraction;
+			var disEarth = data[dayIdx][3] + (data[dayIdx+1][3] - data[dayIdx][3])*dayFraction;
+			var disSun   = data[dayIdx][4] + (data[dayIdx+1][4] - data[dayIdx][4])*dayFraction;
+			var speedEarth = ((Math.abs(data[dayIdx][3] - data[dayIdx+1][3])/86400));
+			var speedSun   = ((Math.abs(data[dayIdx][4] - data[dayIdx+1][4])/86400));
+			var minPerDayX = 60 * Math.abs(dar*180/12);
+			var minPerDayY = 60 * Math.abs((data[dayIdx+1][1] - data[dayIdx][1]));
+			return [ar, dec, mag, disEarth, disSun, data[dayIdx][5], speedEarth, speedSun, minPerDayX, minPerDayY];
+		}
+		
+		function getPlacemarkPosition(ar,dec){
+			var proj = eq2px(ar,dec);
+			var pixelX = proj[0];
+			var pixelY = proj[1];
+			return [pixelX - 26, pixelY - 26, pixelX + 20, pixelY + 20];
+		}
+				
+		function update(){
+			var date = new Date();
+			var nowUTC = date.getTime();
+			var objectdata = getCometData(nowUTC);
+			var ar  = objectdata[0];
+			var dec = objectdata[1];
+			var mag = objectdata[2];
+			var disEarth = objectdata[3];
+			var disSun   = objectdata[4];
+			var constel  = objectdata[5];
+			var speedX   = objectdata[8];
+			var speedY   = objectdata[9];
+			
+			document.getElementById('ar').innerHTML = getAR(ar);	
+			document.getElementById('dec').innerHTML = getDec(dec);
+			document.getElementById('mag').innerHTML = mag == -100 ? 'N.A.' : mag.toFixed(2);
+			document.getElementById('disearth').innerHTML = addCommas((disEarth).toFixed(0));
+			document.getElementById('dissun').innerHTML = addCommas((disSun).toFixed(0));
+			document.getElementById('speedearth').innerHTML = (objectdata[6].toFixed(1));
+			document.getElementById('speedsun').innerHTML = (objectdata[7].toFixed(1));
+			document.getElementById('const').innerHTML = constel;
+			if (perihelion > 0){
+				document.getElementById('timetoperihelion').innerHTML = getDaysToPerihelion();
+			}
+			
+			if (nowUTC > lastFullUpdateTime + deltaFullUpdate){
+				var placemarkLocation = getPlacemarkPosition(ar,dec);
+				var leftPos = placemarkLocation[0];
+				var topPos  = placemarkLocation[1];
+				var labelLeftPos = placemarkLocation[2];
+				var labelTopPos  = placemarkLocation[3];
+
+				document.getElementById('comet').style.left = leftPos + 'px';
+				document.getElementById('comet').style.top  = topPos  + 'px';
+				document.getElementById('comet').style.display = 'block';
+				document.getElementById('cometlabel').style.left = labelLeftPos + 'px';
+				document.getElementById('cometlabel').style.top  = labelTopPos  + 'px';
+				document.getElementById('cometlabel').style.display = 'block';
+				
+				var deltaTime = 96;
+				var speed = Math.sqrt(speedX*speedX + speedY*speedY);
+				var dist  = Math.sqrt(fovX*fovX + fovY*fovY)/8;
+				if (speed > 0){
+					deltaTime = Math.min(deltaTime, Math.floor(48*dist / speed));
+				}
+				deltaTime = deltaTime/2;
+				
+				document.getElementById('cometlabelp1').innerHTML = deltaTime + 'h&nbsp;Ago';
+				document.getElementById('cometlabelp2').innerHTML = 2*deltaTime + 'h&nbsp;Ago';
+				document.getElementById('cometlabeln1').innerHTML = 'Next&nbsp;' + deltaTime + 'h';
+				document.getElementById('cometlabeln2').innerHTML = 'Next&nbsp;' + 2*deltaTime + 'h';
+				
+				for(var i=-2;i<=2;i++){
+					if (i!=0){
+						var prefix = (i<0 ? 'p' : 'n') + Math.abs(i);
+						objectdata = getCometData(nowUTC + i*deltaTime*86400000 / 24);
+						ar  = objectdata[0];
+						dec = objectdata[1];
+						placemarkLocation = getPlacemarkPosition(ar,dec);
+						leftPos = placemarkLocation[0];
+						topPos  = placemarkLocation[1];
+						labelLeftPos = placemarkLocation[2];
+						labelTopPos  = placemarkLocation[3];
+						document.getElementById('comet'+prefix).style.left = leftPos + 'px';
+						document.getElementById('comet'+prefix).style.top  = topPos  + 'px';
+						document.getElementById('comet'+prefix).style.display = 'block';
+						document.getElementById('cometlabel'+prefix).style.left = labelLeftPos + 'px';
+						document.getElementById('cometlabel'+prefix).style.top  = labelTopPos  + 'px';
+						document.getElementById('cometlabel'+prefix).style.display = 'block';
+					}
+				}
+				
+				positionObjectLabels();
+				lastFullUpdateTime = nowUTC;
+			}
+		}
+		
+		function computeEffectiveImageSize(){
+			var tmpAR = window.innerWidth/window.innerHeight;
+			if (tmpAR >= aspectRatio){
+				effectiveImageWidth = window.innerWidth;
+				effectiveImageHeight = Math.floor(window.innerWidth / aspectRatio);
+				document.body.style['overflow-x']='hidden';
+				document.body.style['overflow-y']='auto';
+			} else {
+				effectiveImageWidth = Math.floor(window.innerHeight * aspectRatio);
+				effectiveImageHeight = window.innerHeight;
+				document.body.style['overflow-y']='hidden';
+				document.body.style['overflow-x']='auto';
+			}
+		}
+		
+		function updateImageSize(){
+			document.getElementById('skyimage').style.width = effectiveImageWidth + 'px';
+			document.getElementById('skyimage').style.height = effectiveImageHeight + 'px';
+			var scrollX = Math.floor((effectiveImageWidth-window.innerWidth)/2);
+			var scrollY = Math.floor((effectiveImageHeight-window.innerHeight)/2);
+			window.scrollTo(scrollX, scrollY)
+		}
+
+		function onMouseMove(event){
+			var mouseX = event.clientX + window.pageXOffset;
+			var mouseY = event.clientY + window.pageYOffset;
+			var proj = px2eq(mouseX,mouseY);
+			document.getElementById('cursorar').innerHTML = getAR(proj[0]);
+			document.getElementById('cursordec').innerHTML = getDec(proj[1]);
+		}
+
+		function onWindowResize(event) {
+			computeEffectiveImageSize();
+			updateImageSize();
+			update();
+		}
+		
+		function eq2rad(ar,dec){return [ar*Math.PI/12,dec*Math.PI/180];}
+		function rad2eq(arRad,decRad){return [12*arRad/Math.PI,180*decRad/Math.PI];}
+		function eq2px(ar,dec){
+			var res = eq2rad(ar,dec);
+			var arRad  = res[0];
+			var decRad = res[1];
+			var cosC = Math.sin(centerYRad)*Math.sin(decRad)+ Math.cos(centerYRad)*Math.cos(decRad)*Math.cos(arRad-centerXRad);
+			var x = (Math.cos(decRad)*Math.sin(arRad-centerXRad))/cosC;
+			var y = (Math.cos(centerYRad)*Math.sin(decRad)-Math.sin(centerYRad)*Math.cos(decRad)*Math.cos(arRad-centerXRad))/cosC;
+			return [Math.round(effectiveImageWidth*(.5-x/fovXRad)),Math.round(effectiveImageHeight*(.5-y/fovYRad))];
+		}
+		function px2eq(coordX,coordY){
+			var x = -fovXRad*(coordX-effectiveImageWidth/2)/effectiveImageWidth;
+			var y = -fovYRad*(coordY-effectiveImageHeight/2)/effectiveImageHeight;
+			if(x==0 && y==0) return [centerXRad,centerYRad];
+			var r = Math.sqrt(x*x+y*y);
+			var c = Math.atan(r);
+			var arRad = centerXRad+Math.atan(x*Math.sin(c)/(r*Math.cos(centerYRad)*Math.cos(c)-y*Math.sin(centerYRad)*Math.sin(c)));
+			var decRad = Math.asin(Math.cos(c)*Math.sin(centerYRad) + y*Math.sin(c)*Math.cos(centerYRad)/r);
+			return rad2eq(arRad,decRad);
+		}
+				
+		function createObjectLabels(){
+			tycho.className='starlabel';
+			tycho.objectType='star';
+
+			hipparcos.className='hipparcoslabel';
+			hipparcos.objectType='hipparcos';
+
+			pgc.className='galaxylabel';
+			pgc.objectType='galaxy';
+
+			gsc.className='gsclabel';
+			gsc.objectType='gsc';
+
+			_createObjectLabels(tycho);
+			_createObjectLabels(hipparcos);
+			_createObjectLabels(pgc);
+			_createObjectLabels(gsc);
+		}
+		
+		function _createObjectLabels(objectsArray){
+		
+			var length = objectsArray.length, element = null, point, id, mag;
+			
+			for (var i = 0; i < length; i++) {
+				
+				element = objectsArray[i];
+				
+				id = element[0];
+				
+				div = document.createElement('span');
+				div.id = element[4];
+				div.className = objectsArray.className;
+				div.style.position = 'absolute';
+				div.title = '';
+				
+				if (objectsArray.objectType == 'gsc'){
+					div.innerHTML = 'm' + (1*element[3]).toFixed(2);
+				}
+				else {
+					div.innerHTML = id + ((objectsArray.objectType == 'galaxy' && (1*element[3]) == 0)  ? '' : '<br>m' + (1*element[3]).toFixed(2));
+				}
+
+				document.body.appendChild(div);
+
+				if (objectsArray.objectType == 'star'){
+					$('#' + div.id).tooltip({ 
+						content: id + ' (Tycho 2 Catalogue)<br>AR: ' + getAR(element[1]) + '<br>Dec: ' + getDec(element[2]) + '<br>Magnitude: ' +  (1*element[3]).toFixed(2),	
+						tooltipClass: 'ui-tooltip'
+					});
+				}
+				if (objectsArray.objectType == 'gsc'){
+					$('#' + div.id).tooltip({ 
+						content: element[0] + ' (GSC II Catalogue)<br>AR: ' + getAR(element[1]) + '<br>Dec: ' + getDec(element[2]) + '<br>Magnitude: ' +  (1*element[3]).toFixed(2),	
+						tooltipClass: 'ui-tooltip'
+					});
+				}
+				if (objectsArray.objectType == 'hipparcos'){
+					$('#' + div.id).tooltip({ 
+						content: id + ' (Hipparcos Catalogue)<br>AR: ' + getAR(element[1]) + '<br>Dec: ' + getDec(element[2]) + '<br>Magnitude: ' +  (1*element[3]).toFixed(2) + 
+								'<br>Spectral Type: ' + element[9],	
+						tooltipClass: 'ui-tooltip'
+					});
+				}
+				if (objectsArray.objectType == 'galaxy'){
+					$('#' + div.id).tooltip({ 
+						content: 'Galaxy: ' + id + '<br>AR: ' + getAR(element[1]) + '<br>Dec: ' + getDec(element[2]) + '<br>Magnitude: ' + ((1*element[3]) == 0 ? '?' : (1*element[3]).toFixed(2)),	
+						tooltipClass: 'ui-tooltip'
+					});
+				}
+
+			}
+		}
+		function positionObjectLabels(){
+			_positionObjectLabels(tycho);
+			_positionObjectLabels(hipparcos);
+			_positionObjectLabels(pgc);
+			_positionObjectLabels(gsc);
+		}
+		function _positionObjectLabels(objectsArray){
+			var length = objectsArray.length, element = null, point, id, mag;
+			for (var i = 0; i < length; i++) {
+				element = objectsArray[i];
+				point = eq2px(element[1], element[2]);
+				div = document.getElementById(element[4]);
+				if(point[1] >= 0 && point[1] <= effectiveImageHeight && point[0] >= 0 && point[0] <= effectiveImageWidth){
+					div.style.left = point[0] + 'px';
+					
+					if (objectsArray.objectType == "gsc"){
+						div.style.top = point[1] + 'px';
+					}
+					else {
+						div.style.top = point[1] + 'px';
+					}
+					
+					div.style.display = labelsVisible == 1 ? 'block' : 'none';
+				}
+				else {div.style.display = 'none';}
+			}
+		}
+		
+		function toggleLabels(){
+			if (labelsVisible == 1){
+				labelsVisible = 0;
+				positionObjectLabels();
+				document.getElementById('labelsLink').innerHTML = 'Show Labels';
+			}
+			else {
+				labelsVisible = 1;
+				positionObjectLabels();
+				document.getElementById('labelsLink').innerHTML = 'Hide Labels';
+			}
+		}
+		
+		function toggleAbout(){
+			if (aboutVisible == 1){hideAbout();}
+			else {showAbout();}
+		}
+		
+		function showAbout(){
+			aboutVisible = 1;
+			document.getElementById('about').style.display = 'block';
+			//document.getElementById('aboutlink').innerHTML = '[Hide Info]';
+		}
+
+		function hideAbout(){
+			aboutVisible = 0;
+			document.getElementById('about').style.display = 'none';
+			//document.getElementById('aboutlink').innerHTML = '[Show Info]';
+		}
+		
+		function init(){
+			updateImageSize();
+			window.addEventListener('resize', onWindowResize, false);
+			document.addEventListener('mousemove', onMouseMove, false);
+		}
+		
+		</script>
+	</head>
+	<body style="text-align:center;" onload="init();">
+
+		<div id="header">
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<td colspan="2" class="ephemeridesform">
+						<h1 style="display: inline; margin: 0px;">
+							Comet ISON (C/2012 S1)&nbsp;
+						</h1>
+                </tr>
+				<tr>
+					<td colspan="2" class="objectdata transparentbg">
+						<span class="label">R.A.:</span><span id="ar" class="value">11h 42m 16s</span>&nbsp;
+						<span class="label">Dec.:</span><span id="dec"  class="value">+02&deg; 25&rsquo; 18&rdquo;</span> (J2000) <span id="const"  class="value">[Vir]</span>
+						<span class="label">Magnitude:</span>&nbsp;<span id="mag" class="value">7.68</span><br>
+						<span class="label">Distance from Sun:</span>&nbsp;<span class="value"><span id="dissun">129414104</span>&nbsp;km&nbsp;[<span id="speedsun"></span>&nbsp;km/s]</span><br>
+						<span class="label">Distance from Earth:</span>&nbsp;<span class="value"><span id="disearth">163066989</span>&nbsp;km&nbsp;[<span id="speedearth"></span>&nbsp;km/s]</span><br>
+												<span class="label">Perihelion:</span>&nbsp;<span class="value">28 Nov 2013&nbsp;[<span id="timetoperihelion"></span>]</span><br>
+											</td>
+				</tr>
+					<td colspan="2" class="objectdatacontrols">
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<img id="skyimage" src="images/sky.jpg">
+
+		<div id="cursorcoordinates">
+			AR:&nbsp;<span id="cursorar" class="value"></span><br>Dec:&nbsp;<span id="cursordec" class="value"></span>
+		</div>
+
+		<img id="comet" src="images/marker.png" style="position:absolute;">
+		<img id="cometp1" src="images/marker.png" style="position:absolute;">
+		<img id="cometp2" src="images/marker.png" style="position:absolute;">
+		<img id="cometn1" src="images/marker.png" style="position:absolute;">
+		<img id="cometn2" src="images/marker.png" style="position:absolute;">
+		<span id="cometlabel">Now</span>
+		<span id="cometlabelp1">6h&nbsp;Ago</span>
+		<span id="cometlabelp2">12h&nbsp;Ago</span>
+		<span id="cometlabeln1">Next&nbsp;6h</span>
+		<span id="cometlabeln2">Next&nbsp;12h</span>
+		
+		<div id="about" class="opaque">
+			<div id="about_content">
+				<h2>Comet ISON (C/2012 S1)</h2>			
+				<h3>Latest updates</h3>
+				<p>Comet ISON is currently in Vir, as bright as magnitude 7.68 and its brightness is increasing. It's distant 163,066,989 kms from Earth and 129,414,104 kms from the Sun.</p>
+
+								<h3>Current close conjunctions</h3>
+				List of bright objects (stars brighter than m9.0 and galaxies brighter than m14.0) close to Comet ISON (C/2012 S1):
+				<table border="1" cellpadding="2">
+				<tr><td>Type</td><td>Name</td><td>Magnitude</td><td>Ar</td><td>Dec</td></tr>
+								<tr><td>Star</td><td>HIP 57084</td><td>8.626</td><td>11h 42m 09s</td><td>+02&deg; 52&rsquo; 42&rdquo;</td></tr>
+								<tr><td>Star</td><td>HIP 57107</td><td>6.9136</td><td>11h 42m 25s</td><td>+02&deg; 21&rsquo; 43&rdquo;</td></tr>
+												</table>
+									
+				<h3>Object information</h3>
+							<img src="images/ison.jpg" style="height:120px;">
+			<p>
+				<a href="http://en.wikipedia.org/wiki/C/2012_S1">Comet ISON (C/2012 S1)</a> was discovered 
+				by V. Nevski and A. Novichonok on September 21 2012. The name ISON comes from "International Scientific Optical Network"
+				which is the name of the observatory used to make the discovery.
+			</p>
+			<p>
+				ISON will reach perihelion on November 28 2013 and current brightness estimations suggest that 
+				it will reach an expected magnitude of -3 to -5 and will be in 
+				a very favorable position for observation.
+			</p>
+			<p>
+				This site shows the current location in the sky, and other relevant information about Comet ISON in real time.
+				Comet's precise position is obtained from the <a href="http://ssd.jpl.nasa.gov/horizons.cgi">JPL Horizons</a>
+				service which provides ephemerides for solar system bodies.
+			</p>
+			<p>
+				This finder chart shows an accurate view of the star field surrounding the comet,
+				simulating a telesopic view.
+				It is obtained from the <a href="http://archive.eso.org/dss/dss">Digitized Sky Surcvey 2</a>,
+				which is a photographic archive covering large part of the sky.
+			</p>
+			<p>
+				The chart covers an area of 45x30 arc minutes, which is roughly equivalent of full Moon's
+				apparent size.
+			</p>						</div>
+			<div style="position: absolute; bottom:10px; right:15px;">
+				<button class="myButton" onclick="hideAbout()">Close</button>
+			</div>
+		</div>
+
+		<div id="footerlinks">
+			<a href="javascript:toggleLabels()" id="labelsLink">Hide Labels</a> : TheSkyLive.com.&nbsp;
+		</div>	
+</div>
+	
+		</div>
+
+		<script>
+			computeEffectiveImageSize();
+						if(aboutVisible == 1){
+				showAbout();
+			}
+			else {
+				hideAbout();
+			}
+						createObjectLabels();
+			update();
+			setInterval(update,250);
+		</script>
+		</body>
+</html>
