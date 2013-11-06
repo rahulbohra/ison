@@ -164,7 +164,6 @@
 
 			#header {
 				position: fixed;
-				top:62px;
 				left:0px;
 				text-align:left;
 				z-index: 1000;
@@ -692,7 +691,6 @@
 		</script>
 	</head>
 	<body style="text-align:center;" onload="init();">
-
 		<div id="header">
 			<table border="0" cellspacing="0" cellpadding="0" width="100%">
 				<tr>
@@ -700,6 +698,8 @@
 						<h1 style="display: inline; margin: 0px;">
 							Comet ISON (C/2012 S1)&nbsp;
 						</h1>
+                        <a href="javascript:toggleLabels()" id="labelsLink" style="float:right">Hide Labels</a>
+                    </td>
                 </tr>
 				<tr>
 					<td colspan="2" class="objectdata transparentbg">
@@ -735,53 +735,10 @@
 		<span id="cometlabeln2">Next&nbsp;12h</span>
 		
 		<div id="about" class="opaque">
-			<div id="about_content">
-				<h2>Comet ISON (C/2012 S1)</h2>			
-				<h3>Latest updates</h3>
-				<p>Comet ISON is currently in Vir, as bright as magnitude 7.68 and its brightness is increasing. It's distant 163,066,989 kms from Earth and 129,414,104 kms from the Sun.</p>
-
-								<h3>Current close conjunctions</h3>
-				List of bright objects (stars brighter than m9.0 and galaxies brighter than m14.0) close to Comet ISON (C/2012 S1):
-				<table border="1" cellpadding="2">
-				<tr><td>Type</td><td>Name</td><td>Magnitude</td><td>Ar</td><td>Dec</td></tr>
-								<tr><td>Star</td><td>HIP 57084</td><td>8.626</td><td>11h 42m 09s</td><td>+02&deg; 52&rsquo; 42&rdquo;</td></tr>
-								<tr><td>Star</td><td>HIP 57107</td><td>6.9136</td><td>11h 42m 25s</td><td>+02&deg; 21&rsquo; 43&rdquo;</td></tr>
-												</table>
-									
-				<h3>Object information</h3>
-							<img src="images/ison.jpg" style="height:120px;">
-			<p>
-				<a href="http://en.wikipedia.org/wiki/C/2012_S1">Comet ISON (C/2012 S1)</a> was discovered 
-				by V. Nevski and A. Novichonok on September 21 2012. The name ISON comes from "International Scientific Optical Network"
-				which is the name of the observatory used to make the discovery.
-			</p>
-			<p>
-				ISON will reach perihelion on November 28 2013 and current brightness estimations suggest that 
-				it will reach an expected magnitude of -3 to -5 and will be in 
-				a very favorable position for observation.
-			</p>
-			<p>
-				This site shows the current location in the sky, and other relevant information about Comet ISON in real time.
-				Comet's precise position is obtained from the <a href="http://ssd.jpl.nasa.gov/horizons.cgi">JPL Horizons</a>
-				service which provides ephemerides for solar system bodies.
-			</p>
-			<p>
-				This finder chart shows an accurate view of the star field surrounding the comet,
-				simulating a telesopic view.
-				It is obtained from the <a href="http://archive.eso.org/dss/dss">Digitized Sky Surcvey 2</a>,
-				which is a photographic archive covering large part of the sky.
-			</p>
-			<p>
-				The chart covers an area of 45x30 arc minutes, which is roughly equivalent of full Moon's
-				apparent size.
-			</p>						</div>
-			<div style="position: absolute; bottom:10px; right:15px;">
-				<button class="myButton" onclick="hideAbout()">Close</button>
-			</div>
 		</div>
-
 		<div id="footerlinks">
-			<a href="javascript:toggleLabels()" id="labelsLink">Hide Labels</a> : TheSkyLive.com.&nbsp;
+			Credit : TheSkyLive.com.&nbsp;<br>
+            App Developer : Rahul Bohra
 		</div>	
 </div>
 	
