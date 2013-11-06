@@ -12,7 +12,7 @@
 		Rahul Bohra
 	</author>
 
-	<icon src="images/icon.jpg" gap:role="default" />
+	<icon src="images/icon.png" gap:role="default" />
 
 	
 	<plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
